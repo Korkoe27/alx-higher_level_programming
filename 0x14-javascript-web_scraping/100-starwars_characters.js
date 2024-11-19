@@ -7,12 +7,11 @@
 
 
 
+
 const request = require('request');
 
 function showActors(id) {
     const url = `https://swapi-api.alx-tools.com/api/films/${id}`;
-    const list = 'https://swapi-api.alx-tools.com/api/people';
-
 
     request(url, function(error, response, body){
         if(error){
@@ -20,19 +19,13 @@ function showActors(id) {
             return;
         }
 
-        request(list, function(error, response, body){
-            if(error){
-                console.error('Error:',error);
-                return;
-            }
 
-            const actors = JSON.parse(body);
-
-        });
 
 
 
         const data  =   JSON.parse(body);
+
+        console.log('Title:',data.title);
 
         if(!data.characters){
             console.error('No results found in the API response.');
@@ -40,11 +33,32 @@ function showActors(id) {
         }
 
         const filmActors = data.characters;
-        console.log(filmActors);
+
+        // console.log(filmActors);
+
+
+
+        for(const actor of filmActors){
+        request(actor, function(error,response){
+            if(error){
+            console.error('Error:',error);
+            }
+
+            const details = JSON.parse(response.body);
+
+            console.log(details.name);
+
+
+    
+        });
+    }
+
+
 
     });
 
 
+
 }
 
-showActors(5);
+showActors(3);
